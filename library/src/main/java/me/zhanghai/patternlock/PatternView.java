@@ -67,6 +67,10 @@ public class PatternView extends View {
 
     private static final boolean PROFILE_DRAWING = false;
     private final CellState[][] mCellStates;
+    private final boolean hideDotNormal;
+    private final boolean hideDotRegular;
+    private final boolean hideDotError;
+    private final boolean hideDotSuccess;
     private boolean mDrawingProfilingStarted = false;
 
     private Paint mPaint = new Paint();
@@ -302,6 +306,11 @@ public class PatternView extends View {
             mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
             mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
         }
+
+        hideDotNormal = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x01) == 0x01;
+        hideDotRegular = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x02) == 0x02;
+        hideDotError = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x03) == 0x03;
+        hideDotSuccess = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x04) == 0x04;
 
         a.recycle();
 
@@ -1006,23 +1015,39 @@ public class PatternView extends View {
         if (!partOfPattern || behavesInStealthMode()) {
             // unselected circle
             outerCircle = mBitmapCircleDefault;
-            innerCircle = mBitmapDotDefault;
+            if (hideDotNormal) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
             outerFilter = mNormalColorFilter;
         } else if (mPatternInProgress) {
             // user is in middle of drawing a pattern
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotTouched;
+            if (hideDotRegular) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotTouched;
+            }
             outerFilter = mRegularColorFilter;
         } else if (mDisplayMode == DisplayMode.Wrong) {
             // the pattern is wrong
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotDefault;
+            if (hideDotError) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
             outerFilter = mErrorColorFilter;
         } else if (mDisplayMode == DisplayMode.Correct ||
                 mDisplayMode == DisplayMode.Animate) {
             // the pattern is correct
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotDefault;
+            if (hideDotSuccess) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
             outerFilter = mSuccessColorFilter;
         } else {
             throw new IllegalStateException("unknown display mode " + mDisplayMode);
