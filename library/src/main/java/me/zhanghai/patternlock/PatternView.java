@@ -945,6 +945,14 @@ public class PatternView extends View {
                     && anyCircles) {
                 currentPath.lineTo(mInProgressX, mInProgressY);
             }
+
+            if (mPatternInProgress) {
+                mPathPaint.setColorFilter(mRegularColorFilter);
+            } else {
+                boolean success = mDisplayMode != DisplayMode.Wrong;
+                mPathPaint.setColorFilter(success ? mSuccessColorFilter : mErrorColorFilter);
+            }
+
             canvas.drawPath(currentPath, mPathPaint);
         }
     }
@@ -1039,13 +1047,20 @@ public class PatternView extends View {
         float sy = Math.min(mSquareHeight / mBitmapHeight, 1.0f);
 
         mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
-        mCircleMatrix.preTranslate(mBitmapWidth/2, mBitmapHeight/2);
+        mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
         mCircleMatrix.preScale(sx * scale, sy * scale);
-        mCircleMatrix.preTranslate(-mBitmapWidth/2, -mBitmapHeight/2);
+        mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
         mPaint.setColorFilter(outerFilter);
         canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
-        mPaint.setColorFilter(mRegularColorFilter);
+
+        //mPaint.setColorFilter(mRegularColorFilter);
+        if (mPatternInProgress || !partOfPattern) {
+            mPaint.setColorFilter(mRegularColorFilter);
+        } else {
+            boolean success = mDisplayMode != DisplayMode.Wrong;
+            mPaint.setColorFilter(success ? mSuccessColorFilter : mErrorColorFilter);
+        }
         canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
     }
 
