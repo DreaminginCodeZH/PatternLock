@@ -10,7 +10,7 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "me.zhanghai.patternlock.sample"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0.0"
