@@ -67,6 +67,10 @@ public class PatternView extends View {
 
     private static final boolean PROFILE_DRAWING = false;
     private final CellState[][] mCellStates;
+    private final boolean hideDotNormal;
+    private final boolean hideDotRegular;
+    private final boolean hideDotError;
+    private final boolean hideDotSuccess;
     private boolean mDrawingProfilingStarted = false;
 
     private Paint mPaint = new Paint();
@@ -134,6 +138,7 @@ public class PatternView extends View {
     private int mAspect;
     private final Matrix mArrowMatrix = new Matrix();
     private final Matrix mCircleMatrix = new Matrix();
+    private final PorterDuffColorFilter mNormalColorFilter;
     private final PorterDuffColorFilter mRegularColorFilter;
     private final PorterDuffColorFilter mErrorColorFilter;
     private final PorterDuffColorFilter mSuccessColorFilter;
@@ -270,9 +275,11 @@ public class PatternView extends View {
 
         mAspect = a.getInt(R.styleable.PatternView_aspect, ASPECT_SQUARE);
 
+        int normalColor = a.getColor(R.styleable.PatternView_normalColor, 0);
         int regularColor = a.getColor(R.styleable.PatternView_regularColor, 0);
         int errorColor = a.getColor(R.styleable.PatternView_errorColor, 0);
         int successColor = a.getColor(R.styleable.PatternView_successColor, 0);
+        mNormalColorFilter = new PorterDuffColorFilter(normalColor, PorterDuff.Mode.SRC_ATOP);
         mRegularColorFilter = new PorterDuffColorFilter(regularColor, PorterDuff.Mode.SRC_ATOP);
         mErrorColorFilter = new PorterDuffColorFilter(errorColor, PorterDuff.Mode.SRC_ATOP);
         mSuccessColorFilter = new PorterDuffColorFilter(successColor, PorterDuff.Mode.SRC_ATOP);
@@ -299,6 +306,11 @@ public class PatternView extends View {
             mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
             mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
         }
+
+        hideDotNormal = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x01) == 0x01;
+        hideDotRegular = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x02) == 0x02;
+        hideDotError = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x03) == 0x03;
+        hideDotSuccess = (a.getInt(R.styleable.PatternView_hideDotDrawable, 0) & 0x04) == 0x04;
 
         a.recycle();
 
@@ -1003,23 +1015,39 @@ public class PatternView extends View {
         if (!partOfPattern || behavesInStealthMode()) {
             // unselected circle
             outerCircle = mBitmapCircleDefault;
-            innerCircle = mBitmapDotDefault;
-            outerFilter = mRegularColorFilter;
+            if (hideDotNormal) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
+            outerFilter = mNormalColorFilter;
         } else if (mPatternInProgress) {
             // user is in middle of drawing a pattern
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotTouched;
+            if (hideDotRegular) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotTouched;
+            }
             outerFilter = mRegularColorFilter;
         } else if (mDisplayMode == DisplayMode.Wrong) {
             // the pattern is wrong
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotDefault;
+            if (hideDotError) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
             outerFilter = mErrorColorFilter;
         } else if (mDisplayMode == DisplayMode.Correct ||
                 mDisplayMode == DisplayMode.Animate) {
             // the pattern is correct
             outerCircle = mBitmapCircle;
-            innerCircle = mBitmapDotDefault;
+            if (hideDotSuccess) {
+                innerCircle = null;
+            }else{
+                innerCircle = mBitmapDotDefault;
+            }
             outerFilter = mSuccessColorFilter;
         } else {
             throw new IllegalStateException("unknown display mode " + mDisplayMode);
@@ -1039,14 +1067,18 @@ public class PatternView extends View {
         float sy = Math.min(mSquareHeight / mBitmapHeight, 1.0f);
 
         mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
-        mCircleMatrix.preTranslate(mBitmapWidth/2, mBitmapHeight/2);
+        mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
         mCircleMatrix.preScale(sx * scale, sy * scale);
-        mCircleMatrix.preTranslate(-mBitmapWidth/2, -mBitmapHeight/2);
+        mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
-        mPaint.setColorFilter(outerFilter);
-        canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
-        mPaint.setColorFilter(mRegularColorFilter);
-        canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
+        if (outerCircle != null) {
+            mPaint.setColorFilter(outerFilter);
+            canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
+        }
+        if (innerCircle != null) {
+            mPaint.setColorFilter(mRegularColorFilter);
+            canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
+        }
     }
 
     @Override

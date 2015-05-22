@@ -18,6 +18,8 @@
             <enum name="lock_width" value="1" />
             <enum name="lock_height" value="2" />
         </attr>
+        <!-- Defines the unselected color. -->
+        <attr name="normalColor" format="color|reference" />
         <!-- Defines the regular pattern color. -->
         <attr name="regularColor" format="color|reference" />
         <!-- Defines the error color. -->
@@ -31,6 +33,12 @@
         <attr name="circleDrawableDefault" format="reference" />
         <attr name="circleDrawable" format="reference" />
         <attr name="arrowUpDrawable" format="reference" />
+        <attr name="hideDotDrawable">
+            <flag name="normal" value="0x01" />
+            <flag name="regular" value="0x02" />
+            <flag name="error" value="0x03" />
+            <flag name="success" value="0x04" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="PatternLockTheme">
