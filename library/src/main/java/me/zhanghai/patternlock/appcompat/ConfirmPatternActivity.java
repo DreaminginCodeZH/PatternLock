@@ -3,20 +3,18 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.patternlock;
+package me.zhanghai.patternlock.appcompat;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
+import me.zhanghai.patternlock.PatternView;
 import me.zhanghai.patternlock.internal.ConfirmPatternActivityDelegate;
 
-// For AOSP implementations, see:
-// https://android.googlesource.com/platform/packages/apps/Settings/+/master/src/com/android/settings/ConfirmLockPattern.java
-// https://android.googlesource.com/platform/frameworks/base/+/43d8451/policy/src/com/android/internal/policy/impl/keyguard/KeyguardPatternView.java
-// https://android.googlesource.com/platform/frameworks/base/+/master/packages/Keyguard/src/com/android/keyguard/KeyguardPatternView.java
-public class ConfirmPatternActivity extends Activity implements ConfirmPatternActivityDelegate.Receiver {
+public class ConfirmPatternActivity extends AppCompatActivity implements ConfirmPatternActivityDelegate.Receiver {
 
     public static final int RESULT_FORGOT_PASSWORD = ConfirmPatternActivityDelegate.RESULT_FORGOT_PASSWORD;
 
