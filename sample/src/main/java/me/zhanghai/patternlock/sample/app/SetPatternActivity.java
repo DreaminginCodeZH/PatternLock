@@ -35,7 +35,7 @@ public class SetPatternActivity extends me.zhanghai.patternlock.SetPatternActivi
     }
 
     @Override
-    protected void onSetPattern(List<PatternView.Cell> pattern) {
+    public void onSetPattern(List<PatternView.Cell> pattern) {
         PatternLockUtils.setPattern(pattern, this);
     }
 }

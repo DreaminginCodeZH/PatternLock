@@ -26,18 +26,18 @@ public class ConfirmPatternActivity extends me.zhanghai.patternlock.ConfirmPatte
     }
 
     @Override
-    protected boolean isStealthModeEnabled() {
+    public boolean isStealthModeEnabled() {
         return !PreferenceUtils.getBoolean(PreferenceContract.KEY_PATTERN_VISIBLE,
                 PreferenceContract.DEFAULT_PATTERN_VISIBLE, this);
     }
 
     @Override
-    protected boolean isPatternCorrect(List<PatternView.Cell> pattern) {
+    public boolean isPatternCorrect(List<PatternView.Cell> pattern) {
         return PatternLockUtils.isPatternCorrect(pattern, this);
     }
 
     @Override
-    protected void onForgotPassword() {
+    public void onForgotPassword() {
 
         startActivity(new Intent(this, ResetPatternActivity.class));
 

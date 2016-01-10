@@ -3,20 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.patternlock;
+package me.zhanghai.patternlock.appcompat;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
+import me.zhanghai.patternlock.PatternView;
 import me.zhanghai.patternlock.internal.SetPatterActivityDelegate;
 
-/*
- * Part of the source is from platform_packages_apps/Settings
- * android.settings.ChooseLockPattern.java
- */
-public class SetPatternActivity extends Activity implements SetPatterActivityDelegate.Receiver {
+public class SetPatternActivity extends AppCompatActivity implements SetPatterActivityDelegate.Receiver {
 
     protected SetPatterActivityDelegate delegate = new SetPatterActivityDelegate();
 
