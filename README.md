@@ -59,7 +59,7 @@ Available `PatternView` attributes are, as in `attrs.xml`:
     <!--Defines the dot count vertically-->
     <attr name="pl_rowCount" format="integer"/>
     <!--Defines the dot count horizontally-->
-    <attr name="pl_colCount" format="integer"/>
+    <attr name="pl_columnCount" format="integer"/>
 </declare-styleable>
 ```
 
