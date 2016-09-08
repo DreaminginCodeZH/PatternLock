@@ -146,7 +146,7 @@ public class PatternView extends View {
     private int mErrorColor;
     private int mSuccessColor;
     private int mRowCount;
-    private int mColCount;
+    private int mColumnCount;
 
     private final Interpolator mFastOutSlowInInterpolator;
     private final Interpolator mLinearOutSlowInInterpolator;
@@ -155,7 +155,7 @@ public class PatternView extends View {
     private AudioManager mAudioManager;
 
     /**
-     * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
+     * Represents a cell in the N X M matrix of the unlock pattern view.
      */
     public static final class Cell {
 
@@ -286,12 +286,12 @@ public class PatternView extends View {
         mErrorColor = a.getColor(R.styleable.PatternView_pl_errorColor, mErrorColor);
         mSuccessColor = a.getColor(R.styleable.PatternView_pl_successColor, mSuccessColor);
         mRowCount = a.getInt(R.styleable.PatternView_pl_rowCount, 3);
-        mColCount = a.getInt(R.styleable.PatternView_pl_colCount, 3);
+        mColumnCount = a.getInt(R.styleable.PatternView_pl_columnCount, 3);
 
         a.recycle();
 
-        mPatternDrawLookup = new boolean[mRowCount][mColCount];
-        mCells = createCells(mColCount, mRowCount);
+        mPatternDrawLookup = new boolean[mRowCount][mColumnCount];
+        mCells = createCells(mColumnCount, mRowCount);
         mPathPaint.setStyle(Paint.Style.STROKE);
         mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -306,9 +306,9 @@ public class PatternView extends View {
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
 
-        mCellStates = new CellState[mRowCount][mColCount];
+        mCellStates = new CellState[mRowCount][mColumnCount];
         for (int i = 0; i < mRowCount; i++) {
-            for (int j = 0; j < mColCount; j++) {
+            for (int j = 0; j < mColumnCount; j++) {
                 mCellStates[i][j] = new CellState();
                 mCellStates[i][j].radius = mDotSize/2;
                 mCellStates[i][j].row = i;
@@ -344,8 +344,8 @@ public class PatternView extends View {
         if (row < 0 || row >= mRowCount) {
             throw new IllegalArgumentException("row must be in range 0-" + mRowCount);
         }
-        if (column < 0 || column >= mColCount) {
-            throw new IllegalArgumentException("column must be in range 0-" + mColCount);
+        if (column < 0 || column >= mColumnCount) {
+            throw new IllegalArgumentException("column must be in range 0-" + mColumnCount);
         }
     }
 
@@ -531,7 +531,7 @@ public class PatternView extends View {
      */
     private void clearPatternDrawLookup() {
         for (int i = 0; i < mRowCount; i++) {
-            for (int j = 0; j < mColCount; j++) {
+            for (int j = 0; j < mColumnCount; j++) {
                 mPatternDrawLookup[i][j] = false;
             }
         }
@@ -549,7 +549,7 @@ public class PatternView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
         final int width = w - getPaddingLeft() - getPaddingRight();
-        mSquareWidth = width / (float)mColCount;
+        mSquareWidth = width / (float) mColumnCount;
 
         if (DEBUG_A11Y) Log.v(TAG, "onSizeChanged(" + w + "," + h + ")");
         final int height = h - getPaddingTop() - getPaddingBottom();
@@ -786,7 +786,7 @@ public class PatternView extends View {
         float hitSize = squareWidth * mHitFactor;
 
         float offset = getPaddingLeft() + (squareWidth - hitSize) / 2f;
-        for (int i = 0; i < mColCount; i++) {
+        for (int i = 0; i < mColumnCount; i++) {
 
             final float hitLeft = offset + squareWidth * i;
             if (x >= hitLeft && x <= hitLeft + hitSize) {
@@ -943,7 +943,7 @@ public class PatternView extends View {
 
     private void cancelLineAnimations() {
         for (int i = 0; i < mRowCount; i++) {
-            for (int j = 0; j < mColCount; j++) {
+            for (int j = 0; j < mColumnCount; j++) {
                 CellState state = mCellStates[i][j];
                 if (state.lineAnimator != null) {
                     state.lineAnimator.cancel();
@@ -1049,7 +1049,7 @@ public class PatternView extends View {
         // draw the circles
         for (int i = 0; i < mRowCount; i++) {
             float centerY = getCenterYForRow(i);
-            for (int j = 0; j < mColCount; j++) {
+            for (int j = 0; j < mColumnCount; j++) {
                 CellState cellState = mCellStates[i][j];
                 float centerX = getCenterXForColumn(j);
                 float translationY = cellState.translationY;
