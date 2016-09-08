@@ -39,10 +39,10 @@ public class PatternUtils {
         return bytes;
     }
 
-    public static List<PatternView.Cell> bytesToPattern(PatternView patternView, byte[] bytes) {
+    public static List<PatternView.Cell> bytesToPattern(byte[] bytes) {
         List<PatternView.Cell> pattern = new ArrayList<>();
         for (byte b : bytes) {
-            pattern.add(patternView.cellOf(b / 3, b % 3));
+            pattern.add(PatternView.Cell.of(b / 3, b % 3));
         }
         return pattern;
     }
@@ -54,8 +54,8 @@ public class PatternUtils {
         return bytesToString(patternToBytes(pattern));
     }
 
-    public static List<PatternView.Cell> stringToPattern(PatternView patternView, String string) {
-        return bytesToPattern(patternView, stringToBytes(string));
+    public static List<PatternView.Cell> stringToPattern(String string) {
+        return bytesToPattern(stringToBytes(string));
     }
 
     private static byte[] sha1(byte[] input) {
