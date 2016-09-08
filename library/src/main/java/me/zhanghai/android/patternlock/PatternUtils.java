@@ -42,7 +42,7 @@ public class PatternUtils {
     public static List<PatternView.Cell> bytesToPattern(PatternView patternView, byte[] bytes) {
         List<PatternView.Cell> pattern = new ArrayList<>();
         for (byte b : bytes) {
-            pattern.add(patternView.of(b / 3, b % 3));
+            pattern.add(patternView.cellOf(b / 3, b % 3));
         }
         return pattern;
     }

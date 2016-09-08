@@ -180,6 +180,9 @@ public class PatternView extends View {
             return column;
         }
 
+        public static Cell of(int row, int column){
+            return new Cell(row, column);
+        }
 
         @Override
         public String toString() {
@@ -335,8 +338,7 @@ public class PatternView extends View {
         return res;
     }
 
-    public Cell of(int row, int column) {
-        checkRange(row, column);
+    public Cell cellOf(int row, int column) {
         return mCells[row][column];
     }
 
@@ -391,6 +393,7 @@ public class PatternView extends View {
         mPattern.addAll(pattern);
         clearPatternDrawLookup();
         for (Cell cell : pattern) {
+            checkRange(cell.getRow(), cell.getColumn());
             mPatternDrawLookup[cell.getRow()][cell.getColumn()] = true;
         }
 
@@ -623,7 +626,7 @@ public class PatternView extends View {
                 if (Math.abs(dRow) >= 2 && Math.abs(dColumn) < 1) {
                     for (int i = 0; i < Math.abs(dRow) - 1; i++) {
                         fillInRow = lastCell.row + ((dRow > 0) ? 1 + i : -1 -i);
-                        fillInGapCell = of(fillInRow, fillInColumn);
+                        fillInGapCell = cellOf(fillInRow, fillInColumn);
 
                         if (fillInGapCell != null &&
                                 !mPatternDrawLookup[fillInGapCell.row][fillInGapCell.column]) {
@@ -635,7 +638,7 @@ public class PatternView extends View {
                 if (Math.abs(dColumn) >= 2 && Math.abs(dRow) < 1) {
                     for (int i = 0; i < Math.abs(dColumn) -1; i++){
                         fillInColumn = lastCell.column + ((dColumn > 0) ? 1 + i : -1 - i);
-                        fillInGapCell = of(fillInRow, fillInColumn);
+                        fillInGapCell = cellOf(fillInRow, fillInColumn);
                         if (fillInGapCell != null &&
                                 !mPatternDrawLookup[fillInGapCell.row][fillInGapCell.column]) {
                             addCellToPattern(fillInGapCell);
@@ -647,7 +650,7 @@ public class PatternView extends View {
                     for (int i = 0; i < Math.abs(dColumn) -1; i++){
                         fillInRow = lastCell.row + ((dRow > 0) ? 1 + i : -1 - i);
                         fillInColumn = lastCell.column + ((dColumn > 0) ? 1 + i : -1 - i);
-                        fillInGapCell = of(fillInRow, fillInColumn);
+                        fillInGapCell = cellOf(fillInRow, fillInColumn);
                         if (fillInGapCell != null &&
                                 !mPatternDrawLookup[fillInGapCell.row][fillInGapCell.column]) {
                             addCellToPattern(fillInGapCell);
@@ -752,7 +755,7 @@ public class PatternView extends View {
         if (mPatternDrawLookup[rowHit][columnHit]) {
             return null;
         }
-        return of(rowHit, columnHit);
+        return cellOf(rowHit, columnHit);
     }
 
     /**
