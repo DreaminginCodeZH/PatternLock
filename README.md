@@ -56,6 +56,10 @@ Available `PatternView` attributes are, as in `attrs.xml`:
     <attr name="pl_errorColor" format="color|reference" />
     <!-- Defines the success color. -->
     <attr name="pl_successColor" format="color|reference"/>
+    <!--Defines the dot count vertically-->
+    <attr name="pl_rowCount" format="integer"/>
+    <!--Defines the dot count horizontally-->
+    <attr name="pl_colCount" format="integer"/>
 </declare-styleable>
 ```
 
