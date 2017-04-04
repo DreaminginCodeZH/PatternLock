@@ -320,6 +320,14 @@ public class PatternView extends View {
         mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
+    public int getPatternRowCount() {
+        return mRowCount;
+    }
+
+    public int getPatternColumnCount() {
+        return mColumnCount;
+    }
+
     public void setPatternSize(int rowCount, int columnCount) {
         if (mRowCount == rowCount && mColumnCount == columnCount) {
             return;
