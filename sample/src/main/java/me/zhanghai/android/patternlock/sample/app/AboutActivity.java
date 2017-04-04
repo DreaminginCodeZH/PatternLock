@@ -22,7 +22,7 @@ import me.zhanghai.android.patternlock.sample.util.AppUtils;
 public class AboutActivity extends ThemedAppCompatActivity {
 
     private static final List<PatternView.Cell> LOGO_PATTERN = new ArrayList<>();
-    static{
+    static {
         LOGO_PATTERN.add(PatternView.Cell.of(0, 1));
         LOGO_PATTERN.add(PatternView.Cell.of(1, 0));
         LOGO_PATTERN.add(PatternView.Cell.of(2, 1));
