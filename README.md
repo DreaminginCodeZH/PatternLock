@@ -43,6 +43,10 @@ Available `PatternView` attributes are, as in `attrs.xml`:
 
 ```xml
 <declare-styleable name="PatternView">
+    <!-- Defines the row count of pattern. -->
+    <attr name="pl_rowCount" format="integer" />
+    <!-- Defines the column count of pattern. -->
+    <attr name="pl_columnCount" format="integer" />
     <!-- Defines the aspect to use when drawing PatternView. -->
     <attr name="pl_aspect">
         <!-- Square; the default value. -->
@@ -56,10 +60,6 @@ Available `PatternView` attributes are, as in `attrs.xml`:
     <attr name="pl_errorColor" format="color|reference" />
     <!-- Defines the success color. -->
     <attr name="pl_successColor" format="color|reference"/>
-    <!--Defines the dot count vertically-->
-    <attr name="pl_rowCount" format="integer"/>
-    <!--Defines the dot count horizontally-->
-    <attr name="pl_columnCount" format="integer"/>
 </declare-styleable>
 ```
 
