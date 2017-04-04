@@ -43,9 +43,9 @@ Available `PatternView` attributes are, as in `attrs.xml`:
 
 ```xml
 <declare-styleable name="PatternView">
-    <!-- Defines the row count of pattern. -->
+    <!-- Defines the row count of the pattern. -->
     <attr name="pl_rowCount" format="integer" />
-    <!-- Defines the column count of pattern. -->
+    <!-- Defines the column count of the pattern. -->
     <attr name="pl_columnCount" format="integer" />
     <!-- Defines the aspect to use when drawing PatternView. -->
     <attr name="pl_aspect">
