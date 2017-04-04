@@ -29,33 +29,53 @@ public class PatternUtils {
         return Base64.decode(string, Base64.DEFAULT);
     }
 
-    public static byte[] patternToBytes(List<PatternView.Cell> pattern) {
+    public static byte[] patternToBytes(List<PatternView.Cell> pattern, int columnCount) {
         int patternSize = pattern.size();
         byte[] bytes = new byte[patternSize];
         for (int i = 0; i < patternSize; ++i) {
             PatternView.Cell cell = pattern.get(i);
-            bytes[i] = (byte)(cell.getRow() * 3 + cell.getColumn());
+            bytes[i] = (byte)(cell.getRow() * columnCount + cell.getColumn());
         }
         return bytes;
     }
 
-    public static List<PatternView.Cell> bytesToPattern(byte[] bytes) {
+    public static byte[] patternToBytes(List<PatternView.Cell> pattern) {
+        return patternToBytes(pattern, PatternView.PATTERN_SIZE_DEFAULT);
+    }
+
+    public static List<PatternView.Cell> bytesToPattern(byte[] bytes, int columnCount) {
         List<PatternView.Cell> pattern = new ArrayList<>();
         for (byte b : bytes) {
-            pattern.add(PatternView.Cell.of(b / 3, b % 3));
+            pattern.add(PatternView.Cell.of(b / columnCount, b % columnCount));
         }
         return pattern;
+    }
+
+    public static List<PatternView.Cell> bytesToPattern(byte[] bytes) {
+        return bytesToPattern(bytes, PatternView.PATTERN_SIZE_DEFAULT);
+    }
+
+    /**
+     * @deprecated Use {@link #patternToSha1String(List, int)} instead for better security.
+     */
+    public static String patternToString(List<PatternView.Cell> pattern, int columnCount) {
+        return bytesToString(patternToBytes(pattern, columnCount));
     }
 
     /**
      * @deprecated Use {@link #patternToSha1String(List)} instead for better security.
      */
     public static String patternToString(List<PatternView.Cell> pattern) {
-        return bytesToString(patternToBytes(pattern));
+        //noinspection deprecation
+        return patternToString(pattern, PatternView.PATTERN_SIZE_DEFAULT);
+    }
+
+    public static List<PatternView.Cell> stringToPattern(String string, int columnCount) {
+        return bytesToPattern(stringToBytes(string), columnCount);
     }
 
     public static List<PatternView.Cell> stringToPattern(String string) {
-        return bytesToPattern(stringToBytes(string));
+        return stringToPattern(string, PatternView.PATTERN_SIZE_DEFAULT);
     }
 
     private static byte[] sha1(byte[] input) {
@@ -66,11 +86,19 @@ public class PatternUtils {
         }
     }
 
+    public static byte[] patternToSha1(List<PatternView.Cell> pattern, int columnCount) {
+        return sha1(patternToBytes(pattern, columnCount));
+    }
+
     public static byte[] patternToSha1(List<PatternView.Cell> pattern) {
-        return sha1(patternToBytes(pattern));
+        return patternToSha1(pattern, PatternView.PATTERN_SIZE_DEFAULT);
+    }
+
+    public static String patternToSha1String(List<PatternView.Cell> pattern, int columnCount) {
+        return bytesToString(patternToSha1(pattern, columnCount));
     }
 
     public static String patternToSha1String(List<PatternView.Cell> pattern) {
-        return bytesToString(patternToSha1(pattern));
+        return patternToSha1String(pattern, PatternView.PATTERN_SIZE_DEFAULT);
     }
 }
