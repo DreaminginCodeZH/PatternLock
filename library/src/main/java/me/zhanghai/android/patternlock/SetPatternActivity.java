@@ -111,7 +111,7 @@ public class SetPatternActivity extends BasePatternActivity
         } else {
             String patternString = savedInstanceState.getString(KEY_PATTERN);
             if (patternString != null) {
-                mPattern = PatternUtils.stringToPattern(mPatternView, patternString);
+                mPattern = PatternUtils.stringToPattern(patternString);
             }
             updateStage(Stage.values()[savedInstanceState.getInt(KEY_STAGE)]);
         }
